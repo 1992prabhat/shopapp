@@ -1,9 +1,11 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
-import { json, urlencoded } from 'body-parser';
 import cookieSession from 'cookie-session';
 import mongoose from 'mongoose';
+import { currentUser, errorHandler } from '@prabhat-shop-app/common';
+
+import { authRouter } from './auth/auth.router';
 
 dotenv.config();
 
@@ -22,7 +24,9 @@ export class AppModule {
 		app.use(cookieSession({
 			signed: false,
 			secure: false
-		}))
+		}));
+
+		Object.setPrototypeOf(this, AppModule.prototype)
 	}
 
 	async start() {
@@ -40,6 +44,11 @@ export class AppModule {
 			throw new Error('database connection error')
 		}
 
+
+		this.app.use(currentUser(process.env.JWT_KEY!));
+		this.app.use(errorHandler);
+
+		this.app.use(authRouter);
 		this.app.listen(8080, () => console.log('OK! port 8080'));
 	}
 }
