@@ -1,4 +1,4 @@
-import { Application } from 'express';
+import express, { Application } from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 import { json, urlencoded } from 'body-parser';
@@ -17,8 +17,8 @@ export class AppModule {
 			optionsSuccessStatus: 200
 		}));
 
-		app.use(urlencoded({ extended: true}));
-		app.use(json());
+		app.use(express.urlencoded({ extended: false}));
+		app.use(express.json());
 		app.use(cookieSession({
 			signed: false,
 			secure: false
