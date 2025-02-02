@@ -1,25 +1,35 @@
-import { Request, Response, NextFunction, Router, RequestHandler } from "express";
+import { Request, Response, NextFunction, Router } from "express";
 import { authService } from "./auth.service";
-import { currentUser } from '@prabhat-shop-app/common';
+import { BadRequestError, currentUser } from '@prabhat-shop-app/common';
+import * as dotenv from 'dotenv';
 
+dotenv.config()
 const router = Router();
 
 router.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
 	const { first_name, last_name, email, password } = req.body;
 
-	const jwt = await authService.signup({first_name, last_name, email, password}, next);
+	const result = await authService.signup({first_name, last_name, email, password});
 
-	req.session = { jwt };
+	if (result.message) {
+		return next(new BadRequestError(result.message))
+	};
+
+	req.session =  {jwt: result.jwt} ;
 
 	res.status(201).send(true);
 });
 
 router.post('/signin', async (req: Request, res: Response, next: NextFunction) => {
-	const { first_name, last_name, email, password } = req.body;
+	const { email, password } = req.body;
 
-	const jwt = await authService.signup({first_name, last_name, email, password}, next);
+	const result = await authService.signin({email, password});
 
-	req.session = { jwt };
+	if (result.message) {
+		return next(new BadRequestError(result.message));
+	}
+
+	req.session = {jwt: result.jwt};
 
 	res.status(201).send(true);
 });

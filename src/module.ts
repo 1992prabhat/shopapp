@@ -44,11 +44,11 @@ export class AppModule {
 			throw new Error('database connection error')
 		}
 
-
+		// console.log(process.env.JWT_KEY!)
 		this.app.use(currentUser(process.env.JWT_KEY!));
+		this.app.use(authRouter);
 		this.app.use(errorHandler);
 
-		this.app.use(authRouter);
 		this.app.listen(8080, () => console.log('OK! port 8080'));
 	}
 }
