@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import { currentUser, errorHandler } from '@prabhat-shop-app/common';
 
 import { authRouter } from './auth/auth.router';
+import { sellerRouter } from './seller/seller.router';
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ export class AppModule {
 		// console.log(process.env.JWT_KEY!)
 		this.app.use(currentUser(process.env.JWT_KEY!));
 		this.app.use(authRouter);
+		this.app.use(sellerRouter);
 		this.app.use(errorHandler);
 
 		this.app.listen(8080, () => console.log('OK! port 8080'));

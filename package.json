@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prabhat-shop-app/common": "^1.0.29",
+    "@prabhat-shop-app/common": "^1.0.33",
     "@types/cookie-session": "^2.0.49",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",

@@ -5,7 +5,8 @@ import { JwtPayload } from "@prabhat-shop-app/common";
 declare global {
 	namespace Express {
 		interface Request {
-			currentUser?: JwtPayload
+			currentUser?: JwtPayload,
+			uploaderError?: Error
 		}
 	}
 }
